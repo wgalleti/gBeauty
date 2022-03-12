@@ -1,0 +1,12 @@
+/* make the customizations */
+$theme-colors: (
+        "primary": #903CF3,
+        "secondary": #282A2D
+);
+
+/* import bootstrap to set changes */
+@import "~bootstrap/scss/bootstrap";
+
+.content {
+  margin-top: 70px;
+}

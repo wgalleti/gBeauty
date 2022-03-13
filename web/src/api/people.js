@@ -9,7 +9,7 @@ export default class People extends Model {
   peopleType() {
     return {
       store: new CustomStore({
-        keyField: "id",
+        key: "id",
         byKey: async (key) => {
           const data = await this.loadDetail("types/");
           return data.filter((f) => f.id === key)[0];

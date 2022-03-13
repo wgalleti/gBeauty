@@ -3,9 +3,13 @@ import CustomStore from "devextreme/data/custom_store";
 
 export default class Model {
   constructor(resource, keyField = "id") {
-    this.resource = resource;
+    this.resource = this._checkResource(resource);
     this.http = http;
     this.keyField = keyField;
+  }
+
+  _checkResource(resource) {
+    return resource[resource.length - 1] === "/" ? resource : `${resource}/`;
   }
 
   async load(filters = {}) {
@@ -18,9 +22,9 @@ export default class Model {
   }
 
   async loadDetail(detailName) {
-    console.log(detailName);
     try {
-      const { data } = await this.http.get(`${this.resource}/${detailName}`);
+      const resource = this._checkResource(`${this.resource}${detailName}`);
+      const { data } = await this.http.get(resource);
       return data;
     } catch (e) {
       console.error(e);
@@ -30,10 +34,10 @@ export default class Model {
   async save(key, item) {
     try {
       if (key) {
-        const { data } = await this.http.patch(`${this.resource}/${key}`, item);
+        const resource = this._checkResource(`${this.resource}${key}`);
+        const { data } = await this.http.patch(resource, item);
         return data;
       }
-
       const { data } = await this.http.post(this.resource, item);
       return data;
     } catch (e) {
@@ -51,7 +55,7 @@ export default class Model {
 
   makeCustomStore() {
     return new CustomStore({
-      keyField: this.keyField,
+      key: this.keyField,
       load: async (options) => {
         try {
           const data = await this.load();

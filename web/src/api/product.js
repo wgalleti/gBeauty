@@ -1,9 +1,9 @@
 import Model from "../plugins/model";
 import CustomStore from "devextreme/data/custom_store";
 
-export default class Service extends Model {
+export default class Product extends Model {
   constructor() {
-    super("services");
+    super("products");
   }
 
   lookup() {

@@ -23,6 +23,7 @@ pytest-cov = "*"
 codecov = "*"
 pytest-django = "*"
 django-configurations = "*"
+jupyter = "*"
 
 [requires]
 python_version = "3.10"

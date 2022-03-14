@@ -26,6 +26,7 @@ from .serializers import (
 class PeopleViewSet(viewsets.ModelViewSet):
     queryset = People.objects.all()
     serializer_class = PeopleSerializer
+    filter_fields = ('id', 'people_type', 'first_name', 'last_name',)
 
     @action(methods=['get'], detail=False)
     def types(self, request, pk=None):
@@ -53,10 +54,15 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 
 class TreatmentViewSet(viewsets.ModelViewSet):
-    queryset = Treatment.objects.all()
+    queryset = Treatment.objects.all().order_by('-pk')
     serializer_class = TreatmentSerializer
+
+    @action(methods=['get'], detail=False)
+    def status(self, request, pk=None):
+        return response.Response(choice_to_list(Treatment.STATUS))
 
 
 class TreatmentItemViewSet(viewsets.ModelViewSet):
     queryset = TreatmentItem.objects.all()
     serializer_class = TreatmentItemSerializer
+    filter_fields = ('treatment', 'id')

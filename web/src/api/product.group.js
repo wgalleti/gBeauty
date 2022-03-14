@@ -1,22 +1,24 @@
 import Model from "../plugins/model";
 import CustomStore from "devextreme/data/custom_store";
 
-export default class Service extends Model {
+export default class ProductGroupPage extends Model {
   constructor() {
-    super("services");
+    super("groups");
   }
 
   lookup() {
     return {
       store: new CustomStore({
         key: "id",
-        loadMode: "raw",
+        byKey: async (key) => {
+          const data = await this.load({ id: key });
+          return data;
+        },
         load: async (options) => {
           const data = await this.load();
           return data;
         },
       }),
-      sort: "name",
     };
   }
 }

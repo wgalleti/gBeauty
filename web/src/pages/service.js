@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import DataGrid from "devextreme-react/data-grid";
 import Service from "../api/service";
 
@@ -34,7 +34,7 @@ const ServicePage = () => {
       { dataField: "id", caption: "#" },
       { dataField: "name" },
       { dataField: "price", dataType: "number" },
-      { dataField: "duration" },
+      { dataField: "timeDuration", dataType: "number" },
     ],
     searchPanel: {
       visible: true,
@@ -47,7 +47,7 @@ const ServicePage = () => {
       mode: "popup",
       popup: {
         height: "auto",
-        width: "80%",
+        width: "60%",
         showTitle: true,
         title: "Services Form",
         shadingColor: "rgba(0,0,0, 0.7)",
@@ -63,20 +63,32 @@ const ServicePage = () => {
         showValidationSummary: false,
         colCount: 4,
         items: [
-          { dataField: "name" },
-          { dataField: "price" },
-          { dataField: "duration" },
+          { dataField: "name", colSpan: 2, validationRules: [requiredField] },
+          {
+            dataField: "price",
+            editorType: "dxNumberBox",
+            editorOptions: {
+              format: { type: "fixedPoint", precision: 2 },
+            },
+            validationRules: [requiredField],
+          },
+          {
+            dataField: "timeDuration",
+            editorType: "dxNumberBox",
+            editorOptions: {
+              format: { type: "fixedPoint", precision: 0 },
+            },
+            validationRules: [requiredField],
+          },
         ],
       },
     },
   };
+
   return (
     <>
       <Row>
-        <Col md={2}>Filtros</Col>
-        <Col>
-          <DataGrid dataSource={dataSource} {...gridOptions} />
-        </Col>
+        <DataGrid dataSource={dataSource} {...gridOptions} />
       </Row>
     </>
   );

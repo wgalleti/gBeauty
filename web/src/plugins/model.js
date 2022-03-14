@@ -14,7 +14,18 @@ export default class Model {
 
   async load(filters = {}) {
     try {
-      const { data } = await this.http.get(this.resource, filters);
+      const { data } = await this.http.get(this.resource, { params: filters });
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async find(key) {
+    try {
+      const { data } = await this.http.get(
+        this._checkResource(`${this.resource}${key}`)
+      );
       return data;
     } catch (e) {
       console.error(e);
@@ -53,12 +64,12 @@ export default class Model {
     }
   }
 
-  makeCustomStore() {
+  makeCustomStore(filter = {}) {
     return new CustomStore({
       key: this.keyField,
       load: async (options) => {
         try {
-          const data = await this.load();
+          const data = await this.load(filter);
 
           return {
             data,

@@ -94,7 +94,11 @@ class Treatment(models.Model):
     customer = models.ForeignKey('core.People', on_delete=models.DO_NOTHING, related_name='treatment_customer')
     duration = models.IntegerField(null=True, blank=True)
     status = models.IntegerField(choices=STATUS, default=STATUS_IN_SERVICE)
-    cost = models.DecimalField(max_digits=15, decimal_places=2, default=0, blank=True)
+
+    @property
+    def cost(self):
+        return sum([i.amount * i.cost - i.discount for i in self.treatmentitem_set.all()])
+
     value = models.DecimalField(max_digits=15, decimal_places=2, default=0, blank=True)
     tip = models.DecimalField(max_digits=15, decimal_places=2, default=0, blank=True)
 

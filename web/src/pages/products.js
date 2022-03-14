@@ -1,21 +1,18 @@
 import React from "react";
 import { Row } from "react-bootstrap";
 import DataGrid from "devextreme-react/data-grid";
-import People from "../api/people";
+import Product from "../api/product";
+import ProductGroup from "../api/product.group";
 
 const requiredField = { type: "required", message: "This field is required" };
+const productGroupModel = new ProductGroup();
+const productModel = new Product();
+const dataSource = productModel.makeCustomStore();
 
-const peopleModel = new People();
-const peopleTypes = peopleModel.peopleType();
-const dataSource = peopleModel.makeCustomStore();
-
-const PeoplePage = () => {
+const ProductPage = () => {
   let grid;
 
   const gridOptions = {
-    onInitNewRow: (e) => {
-      e.data.active = true;
-    },
     onContentReady: (e) => {
       grid = e.component;
     },
@@ -37,23 +34,16 @@ const PeoplePage = () => {
     },
     columns: [
       { dataField: "id", caption: "#" },
-      { dataField: "firstName", caption: "First Name" },
+      { dataField: "name" },
+      { dataField: "price", dataType: "number" },
       {
-        dataField: "lastName",
-        caption: "Last Name",
-      },
-      { dataField: "documentId", caption: "Document", dataType: "numeric" },
-      { dataField: "email", caption: "Email" },
-      {
-        dataField: "peopleType",
-        caption: "Type",
+        dataField: "group",
         lookup: {
+          dataSource: productGroupModel.lookup(),
           displayExpr: "name",
           valueExpr: "id",
-          dataSource: peopleTypes,
         },
       },
-      { dataField: "active", caption: "Active", dataType: "boolean" },
     ],
     searchPanel: {
       visible: true,
@@ -66,9 +56,9 @@ const PeoplePage = () => {
       mode: "popup",
       popup: {
         height: "auto",
-        width: "80%",
+        width: "60%",
         showTitle: true,
-        title: "People Form",
+        title: "Services Form",
         shadingColor: "rgba(0,0,0, 0.7)",
       },
       form: {
@@ -82,32 +72,19 @@ const PeoplePage = () => {
         showValidationSummary: false,
         colCount: 4,
         items: [
+          { dataField: "name", colSpan: 2, validationRules: [requiredField] },
           {
-            dataField: "firstName",
-            colSpan: 2,
+            dataField: "price",
             validationRules: [requiredField],
+            editorType: "dxNumberBox",
+            editorOptions: {
+              format: { type: "fixedPoint", precision: 2 },
+            },
           },
           {
-            dataField: "lastName",
-            colSpan: 2,
+            dataField: "group",
             validationRules: [requiredField],
           },
-          {
-            dataField: "documentId",
-            colSpan: 1,
-            validationRules: [requiredField],
-          },
-          {
-            dataField: "email",
-            colSpan: 3,
-            validationRules: [requiredField],
-          },
-          {
-            dataField: "peopleType",
-            colSpan: 2,
-            validationRules: [requiredField],
-          },
-          { dataField: "active" },
         ],
       },
     },
@@ -121,4 +98,4 @@ const PeoplePage = () => {
   );
 };
 
-export default PeoplePage;
+export default ProductPage;

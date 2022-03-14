@@ -19,8 +19,19 @@ const requiredField = { type: "required", message: "This field is required" };
 
 const TreatmentRegisterPage = () => {
   const [formInstance, setFormInstance] = React.useState();
+  const [items, setItems] = React.useState(0);
   let grid;
   const formData = React.useMemo(() => ({}), []);
+
+  const gridRefresh = React.useCallback(() => {
+    if (grid) {
+      grid.refresh();
+    }
+  }, [grid]);
+
+  React.useEffect(() => {
+    if (items !== 0) gridRefresh();
+  }, [items, gridRefresh]);
 
   const options = React.useMemo(
     () => ({
@@ -97,6 +108,8 @@ const TreatmentRegisterPage = () => {
         await treatmentModel.save(null, data);
         formInstance.resetValues();
 
+        setItems((v) => v + 1);
+
         notify(
           {
             message: "Treatment register successfuly",
@@ -112,7 +125,7 @@ const TreatmentRegisterPage = () => {
         console.error(e);
       }
     },
-    [formData, formInstance]
+    [formData, formInstance, gridRefresh]
   );
 
   const gridOptions = {
@@ -217,7 +230,7 @@ const TreatmentRegisterPage = () => {
   };
 
   function renderDetail(props) {
-    return <TreatmentItemPage {...props} />;
+    return <TreatmentItemPage {...props} setItems={setItems} />;
   }
 
   return (

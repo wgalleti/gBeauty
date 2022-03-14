@@ -11,7 +11,7 @@ const productModel = new Product();
 const serviceModel = new Service();
 
 const TreatmentItemPage = (props) => {
-  const { data } = props;
+  const { data, setItems } = props;
   let grid;
 
   const gridOptions = {
@@ -21,6 +21,9 @@ const TreatmentItemPage = (props) => {
     onInitNewRow: (e) => {
       e.data.treatment = data.id;
       e.data.discount = 0;
+    },
+    onRowInserted: (e) => {
+      setItems((v) => v + 1);
     },
     onEditorPreparing: (e) => {
       if (e.parentType === "dataRow" && e.dataField === "service") {

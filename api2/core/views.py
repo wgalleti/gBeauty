@@ -56,6 +56,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 class TreatmentViewSet(viewsets.ModelViewSet):
     queryset = Treatment.objects.all().order_by('-pk')
     serializer_class = TreatmentSerializer
+    filter_fields = ('id', 'status')
 
     @action(methods=['get'], detail=False)
     def status(self, request, pk=None):

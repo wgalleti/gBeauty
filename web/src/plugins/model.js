@@ -2,10 +2,11 @@ import http from "./http";
 import CustomStore from "devextreme/data/custom_store";
 
 export default class Model {
-  constructor(resource, keyField = "id") {
+  constructor(resource, keyField = "id", filter = {}) {
     this.resource = this._checkResource(resource);
     this.http = http;
     this.keyField = keyField;
+    this.constFilter = filter;
   }
 
   _checkResource(resource) {
@@ -14,7 +15,9 @@ export default class Model {
 
   async load(filters = {}) {
     try {
-      const { data } = await this.http.get(this.resource, { params: filters });
+      const { data } = await this.http.get(this.resource, {
+        params: { ...filters, ...this.constFilter },
+      });
       return data;
     } catch (e) {
       console.error(e);

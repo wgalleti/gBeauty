@@ -2,8 +2,9 @@ import Model from "../plugins/model";
 import CustomStore from "devextreme/data/custom_store";
 
 export default class Treatment extends Model {
-  constructor() {
-    super("treatments");
+  constructor(filters = {}) {
+    super("treatments", "id", filters);
+    this.filters = filters;
   }
 
   statusDetail() {

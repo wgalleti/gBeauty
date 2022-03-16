@@ -8,7 +8,7 @@ import People from "../api/people";
 import TreatmentItemPage from "./treatment.item";
 import styles from "./treatment.register.module.css";
 
-const treatmentModel = new Treatment();
+const treatmentModel = new Treatment({ status: 1 });
 const peopleModel = new People();
 const dataSource = {
   store: treatmentModel.makeCustomStore(),
@@ -125,7 +125,7 @@ const TreatmentRegisterPage = () => {
         console.error(e);
       }
     },
-    [formData, formInstance, gridRefresh]
+    [formData, formInstance]
   );
 
   const gridOptions = {
@@ -141,6 +141,17 @@ const TreatmentRegisterPage = () => {
           location: "before",
           options: {
             icon: "refresh",
+            onClick: () => {
+              grid.refresh();
+            },
+          },
+        },
+        {
+          widget: "dxButton",
+          location: "before",
+          options: {
+            icon: "check",
+            hint: "Finish",
             onClick: () => {
               grid.refresh();
             },

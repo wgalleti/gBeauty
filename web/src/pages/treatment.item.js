@@ -36,22 +36,6 @@ const TreatmentItemPage = (props) => {
         e.editorOptions.disabled = typeof e.row.data.cost === "number";
       }
     },
-    toolbar: {
-      items: [
-        "searchPanel",
-        "addRowButton",
-        {
-          widget: "dxButton",
-          location: "before",
-          options: {
-            icon: "refresh",
-            onClick: () => {
-              grid.refresh();
-            },
-          },
-        },
-      ],
-    },
     columns: [
       {
         dataField: "product",
@@ -125,7 +109,7 @@ const TreatmentItemPage = (props) => {
       { dataField: "total", format: { type: "fixedPoint", precision: 2 } },
     ],
     searchPanel: {
-      visible: true,
+      visible: false,
     },
     editing: {
       allowAdding: true,
